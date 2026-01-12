@@ -1,0 +1,56 @@
+import { Lucid, Blockfrost, Data, Constr } from "lucid-cardano";
+import fs from "fs";
+
+const blockfrostKey = "previewRVUk5JJD8VR4RMyEELSS4cTadxODY6hq";
+const adminSeed = fs.readFileSync("./admin.seed", "utf-8").trim();
+const borrowerSeed = fs.readFileSync("./borrower.seed", "utf-8").trim(); 
+
+const lucid = await Lucid.new(
+  new Blockfrost("https://cardano-preview.blockfrost.io/api/v0", blockfrostKey),
+  "Preview"
+);
+
+const unit = "ccfdd393620a746179ab1310d5f681afacf3256bc3997c66ceae5bfa4d455341303031";
+const compiledCode = "59027901010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001159800980098059baa002899192cc004c00cc034dd5000c4c8c966002600a601e6ea8006264b300130063010375401910018acc00400626464660020026eb0c008c04cdd5005912cc00400629422b3001325980099baf301730153754002602e602a6ea80262601d30013756600e602a6ea80066eb8c010c054dd5004cdd7180b980c180c180c180a9baa0098a40009111199119800800801191919800800803112cc00400600713233225980099b910090028acc004cdc78048014400600c80ea26600a00a604400880e8dd7180e0009bab301d001301e0014074297adef6c602259800800c00e2646644b30013372200e00515980099b8f0070028800c01901c44cc014014c08401101c1bae301b001375a6038002603a00280e114a08098c0580062946266004004602e00280910151180a180a980a800c528201e403c6644b3001330013758600460246ea8028dd7180a18091baa0058998009bac3002301237540146eb8c050c048dd5001c528202023013301430143014301430143014301430140012232330010010032259800800c528456600266e3cdd7180b000801c528c4cc008008c05c005012202a8b201c3011300f37546002601e6ea800c8c044c0480062c8060c03cc034dd5180798069baa001300e300c3754005164029300b375400f300e003488966002600800515980098079baa00a801c590104566002601000515980098079baa00a801c5901045900d201a180618068009b8748000c024dd5001c590070c01c004c00cdd5003c52689b2b200201";
+const script = { type: "PlutusV2" as const, script: compiledCode };
+
+async function refund() {
+  lucid.selectWalletFromSeed(adminSeed);
+  const adminAddr = await lucid.wallet.address();
+  const contractAddress = lucid.utils.validatorToAddress(script);
+
+  console.log("Buscando NFT no contrato...");
+  const utxos = await lucid.utxosAt(contractAddress);
+  const nftUtxo = utxos.find(u => u.assets[unit] === 1n);
+
+  if (!nftUtxo) {
+    console.log("❌ NFT não encontrada no contrato.");
+    return;
+  }
+
+  // DEFINIÇÃO EXPLÍCITA DO REDEEMER VOID PARA O AIKEN
+  // Isso gera exatamente o construtor 0 esperado
+  const redeemer = Data.to(new Constr(0, []));
+
+  try {
+    const tx = await lucid.newTx()
+      .collectFrom([nftUtxo], redeemer)
+      .attachSpendingValidator(script)
+      .payToAddress(adminAddr, { [unit]: 1n, lovelace: nftUtxo.assets.lovelace })
+      .addSigner(adminAddr)
+      .addSigner("addr_test1qqpunqtx8jzy8vspaj0uk6z8rsse73j75wz8nvug65s2spkjq8kkaqmwgyaf5pndp9n2pwmr9j30j0j7g6pzs643f6asje0kag")
+      .complete();
+
+    // Assina com ambas as chaves
+    const signed = await tx.sign().signWithSeed(borrowerSeed).complete();
+    
+    console.log("Enviando transação...");
+    const hash = await signed.submit();
+    console.log(`✅ SUCESSO! NFT retornada ao Admin. TX: ${hash}`);
+  } catch (e) {
+    console.error("❌ Falha na devolução:");
+    console.error(e);
+  }
+}
+
+refund();

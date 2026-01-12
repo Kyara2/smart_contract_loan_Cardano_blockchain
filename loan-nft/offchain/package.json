@@ -1,0 +1,19 @@
+{
+  "name": "offchain",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^25.0.6",
+    "lucid-cardano": "^0.10.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

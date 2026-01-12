@@ -1,0 +1,237 @@
+{
+  "preamble": {
+    "title": "kyara/onchain",
+    "description": "Aiken contracts for project 'kyara/onchain'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+42babe5"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "loan_validator.borrow_nft.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/loan_validator~1Datum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/loan_validator~1Redeemer"
+        }
+      },
+      "compiledCode": "59027901010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001159800980098059baa002899192cc004c00cc034dd5000c4c8c966002600a601e6ea8006264b300130063010375401910018acc00400626464660020026eb0c008c04cdd5005912cc00400629422b3001325980099baf301730153754002602e602a6ea80262601d30013756600e602a6ea80066eb8c010c054dd5004cdd7180b980c180c180c180a9baa0098a40009111199119800800801191919800800803112cc00400600713233225980099b910090028acc004cdc78048014400600c80ea26600a00a604400880e8dd7180e0009bab301d001301e0014074297adef6c602259800800c00e2646644b30013372200e00515980099b8f0070028800c01901c44cc014014c08401101c1bae301b001375a6038002603a00280e114a08098c0580062946266004004602e00280910151180a180a980a800c528201e403c6644b3001330013758600460246ea8028dd7180a18091baa0058998009bac3002301237540146eb8c050c048dd5001c528202023013301430143014301430143014301430140012232330010010032259800800c528456600266e3cdd7180b000801c528c4cc008008c05c005012202a8b201c3011300f37546002601e6ea800c8c044c0480062c8060c03cc034dd5180798069baa001300e300c3754005164029300b375400f300e003488966002600800515980098079baa00a801c590104566002601000515980098079baa00a801c5901045900d201a180618068009b8748000c024dd5001c590070c01c004c00cdd5003c52689b2b200201",
+      "hash": "6f4c2c1c8b8e56d11d4761e4d8317effb5c0181230e449f7dc44ac3b"
+    },
+    {
+      "title": "loan_validator.borrow_nft.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59027901010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001159800980098059baa002899192cc004c00cc034dd5000c4c8c966002600a601e6ea8006264b300130063010375401910018acc00400626464660020026eb0c008c04cdd5005912cc00400629422b3001325980099baf301730153754002602e602a6ea80262601d30013756600e602a6ea80066eb8c010c054dd5004cdd7180b980c180c180c180a9baa0098a40009111199119800800801191919800800803112cc00400600713233225980099b910090028acc004cdc78048014400600c80ea26600a00a604400880e8dd7180e0009bab301d001301e0014074297adef6c602259800800c00e2646644b30013372200e00515980099b8f0070028800c01901c44cc014014c08401101c1bae301b001375a6038002603a00280e114a08098c0580062946266004004602e00280910151180a180a980a800c528201e403c6644b3001330013758600460246ea8028dd7180a18091baa0058998009bac3002301237540146eb8c050c048dd5001c528202023013301430143014301430143014301430140012232330010010032259800800c528456600266e3cdd7180b000801c528c4cc008008c05c005012202a8b201c3011300f37546002601e6ea800c8c044c0480062c8060c03cc034dd5180798069baa001300e300c3754005164029300b375400f300e003488966002600800515980098079baa00a801c590104566002601000515980098079baa00a801c5901045900d201a180618068009b8748000c024dd5001c590070c01c004c00cdd5003c52689b2b200201",
+      "hash": "6f4c2c1c8b8e56d11d4761e4d8317effb5c0181230e449f7dc44ac3b"
+    }
+  ],
+  "definitions": {
+    "Int": {
+      "dataType": "integer"
+    },
+    "Option<cardano/address/StakeCredential>": {
+      "title": "Option",
+      "anyOf": [
+        {
+          "title": "Some",
+          "description": "An optional value.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/cardano~1address~1StakeCredential"
+            }
+          ]
+        },
+        {
+          "title": "None",
+          "description": "Nothing.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "aiken/crypto/ScriptHash": {
+      "title": "ScriptHash",
+      "dataType": "bytes"
+    },
+    "aiken/crypto/VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "cardano/address/Address": {
+      "title": "Address",
+      "description": "A Cardano `Address` typically holding one or two credential references.\n\n Note that legacy bootstrap addresses (a.k.a. 'Byron addresses') are\n completely excluded from Plutus contexts. Thus, from an on-chain\n perspective only exists addresses of type 00, 01, ..., 07 as detailed\n in [CIP-0019 :: Shelley Addresses](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0019/#shelley-addresses).",
+      "anyOf": [
+        {
+          "title": "Address",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "payment_credential",
+              "$ref": "#/definitions/cardano~1address~1PaymentCredential"
+            },
+            {
+              "title": "stake_credential",
+              "$ref": "#/definitions/Option<cardano~1address~1StakeCredential>"
+            }
+          ]
+        }
+      ]
+    },
+    "cardano/address/Credential": {
+      "title": "Credential",
+      "description": "A general structure for representing an on-chain `Credential`.\n\n Credentials are always one of two kinds: a direct public/private key\n pair, or a script (native or Plutus).",
+      "anyOf": [
+        {
+          "title": "VerificationKey",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "Script",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1ScriptHash"
+            }
+          ]
+        }
+      ]
+    },
+    "cardano/address/PaymentCredential": {
+      "title": "PaymentCredential",
+      "description": "A general structure for representing an on-chain `Credential`.\n\n Credentials are always one of two kinds: a direct public/private key\n pair, or a script (native or Plutus).",
+      "anyOf": [
+        {
+          "title": "VerificationKey",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "Script",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1ScriptHash"
+            }
+          ]
+        }
+      ]
+    },
+    "cardano/address/StakeCredential": {
+      "title": "StakeCredential",
+      "description": "Represent a type of object that can be represented either inline (by hash)\n or via a reference (i.e. a pointer to an on-chain location).\n\n This is mainly use for capturing pointers to a stake credential\n registration certificate in the case of so-called pointer addresses.",
+      "anyOf": [
+        {
+          "title": "Inline",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/cardano~1address~1Credential"
+            }
+          ]
+        },
+        {
+          "title": "Pointer",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "title": "slot_number",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "transaction_index",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "certificate_index",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "cardano/assets/AssetName": {
+      "title": "AssetName",
+      "dataType": "bytes"
+    },
+    "cardano/assets/PolicyId": {
+      "title": "PolicyId",
+      "dataType": "bytes"
+    },
+    "loan_validator/Datum": {
+      "title": "Datum",
+      "anyOf": [
+        {
+          "title": "Datum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "admin",
+              "$ref": "#/definitions/cardano~1address~1Address"
+            },
+            {
+              "title": "borrower",
+              "$ref": "#/definitions/cardano~1address~1Address"
+            },
+            {
+              "title": "nft_policy",
+              "$ref": "#/definitions/cardano~1assets~1PolicyId"
+            },
+            {
+              "title": "nft_name",
+              "$ref": "#/definitions/cardano~1assets~1AssetName"
+            }
+          ]
+        }
+      ]
+    },
+    "loan_validator/Redeemer": {
+      "title": "Redeemer",
+      "anyOf": [
+        {
+          "title": "Lend",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Return",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

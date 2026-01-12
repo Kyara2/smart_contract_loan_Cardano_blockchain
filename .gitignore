@@ -1,4 +1,5 @@
-loan-nft
-create-nft
-fetch-nft
+loan-nft/offchain/node_modules
+create-nft/offchain/node_modules
+fetch-nft/offchain/node_modules
+
 *.seed
