@@ -31,20 +31,23 @@ async function main() {
   const policyId = lucid.utils.mintingPolicyToId(mintingPolicy);
 
   // NFT
-  const assetName = "MESA001";
+  const assetName = "MESA_003";
   const unit = policyId + fromText(assetName);
 
   // Metadata CIP-721
   const metadata = {
     [policyId]: {
       [assetName]: {
-        name: "Mesa Fisica",
-        image: "",
-        mediaType: "application/json",
-        description: "Mesa para emprestimo",
+        name: "Mesa de colorida de quartzo",
+        image: [
+          "ipfs://bafybeifhwq7ghtkdwhzlezlckzz",
+          "kqkpfpox7wgvzw42jnutd2ercu5vfum"
+        ],
+        mediaType: "image/png",
+        description: "Mesa colorida de quartzo",
         attributes: {
-          identification: "MESA-001",
-          material: "Madeira"
+          identification: "MESA_003",
+          material: "Quartzo"
         }
       },
     },
